@@ -1,52 +1,88 @@
 #include <Arduino.h>
 
+/* defineste pinii aferenti celor 4 LED-uri care indica gradul de incarcare al bateriei */
 #define FIRST_LED 10
 #define SECOND_LED 9
 #define THIRD_LED 8
 #define FOURTH_LED 7
 
+/* defineste pinii aferenti butoanelor de start si stop */
 #define START_BUTTON 6
 #define STOP_BUTTON 5
 
+/* defineste pinii aferenti LED-ului RGB */
 #define RED_LED 4
 #define GREEN_LED 3
 #define BLUE_LED 2
 
+/* defineste cele 4 etape ale incarcarii bateriei (0%-25%, 25%-50%, 50%-75%, 75%-100%)*/
 #define FIRST_STAGE 1
 #define SECOND_STAGE 2
 #define THIRD_STAGE 3
 #define LAST_STAGE 4
 
+/* defineste intervalul de timp pentru comutarea starii LED-urilor */
 #define BLINKING_INTERVAL 750
+
+/* defineste intervalul de timp alocat fiecarui LED */
 #define EACH_LED_INTERVAL 3000
+
+/* defineste intervalul de timp alocat animatiei de finalizare a incarcarii */
 #define STOP_ANIM_INTERVAL 4000
 
+/* defineste intarzierea de timp inainte de inceputul incarcarii */
 #define DELAY_BEFORE_CHARGING_ANIM 100
+
+/* defineste intarzierea de timp inainte de inceputul animatiei de finalizare a incarcarii */
 #define DELAY_BEFORE_STOP_ANIM 750
 
+/* defineste valoarea implicita folosita pentru resetarea timerelor */
 #define DEFAULT_MILLIS 0
 
+/* starea curenta a butonului de start */
 bool startBtnState = HIGH;
+
+/* starea precedenta a butonului de start */
 bool lastStartBtnState = HIGH;
+
+/* momentul de timp in care s-a schimbat starea butonului de start */
 unsigned long lastDebounceTimeStartBtn = DEFAULT_MILLIS;
+
+/* timpul de debounce pentru butonul de start */
 unsigned long debounceDelayStartBtn = 50; 
 
+/* starea curenta a butonului de stop */
 bool stopBtnState = HIGH;
+
+/* starea precedenta a butonului de stop */
 bool lastStopBtnState = HIGH;
+
+/* momentul de timp in care s-a schimbat starea butonului de stop */
 unsigned long lastDebounceTimeStopBtn = DEFAULT_MILLIS;
+
+/* timpul de debounce pentru butonul de stop; este folosit si pentru a implementa prinderea apasarii lungi */
 unsigned long debounceDelayStopBtn = 1000;
 
+/* memoreaza daca statia incarca sau nu*/
 bool isCharging = false;
+
+/* memoreaza daca incarcarea este oprita (i.e. statia se afla in animatia de finalizare a incarcarii) sau nu */
 bool stoppedCharging = false;
+
+/* etapa incarcarii curente */
 uint8_t chargingStage = FIRST_STAGE;
 
+/* momentul de timp in care a avut loc prima comutare a starii LED-ului/LED-urilor */
 unsigned long blinkingStartMillis = DEFAULT_MILLIS;
+
+/* milisecundele care au trecut de la pornirea programului */
 unsigned long currentMillis = DEFAULT_MILLIS;
+
+/* momentul de timp precedent */
 unsigned long prevMillis = DEFAULT_MILLIS;
 
-
 void setup() {
-  /* seteaza toate LED-urile ca OUTPUT si le stinge */
+  /* seteaza toate LED-urile ca output si le stinge */
   pinMode(FIRST_LED, OUTPUT);
   digitalWrite(FIRST_LED, LOW);
 
@@ -68,7 +104,7 @@ void setup() {
   pinMode(BLUE_LED, OUTPUT);
   digitalWrite(BLUE_LED, LOW);
 
-  /* seteaza butoanele de start si stop ca INPUT si activeaza rezistentele de PULL-UP aferente */
+  /* seteaza butoanele de start si stop ca input si activeaza rezistentele de pull-up aferente */
   pinMode(START_BUTTON, INPUT);
   digitalWrite(START_BUTTON, HIGH);
 
@@ -124,7 +160,7 @@ void toggleAllLeds(bool ledState) {
 }
 
 /*
- * Functie ce se ocupa de procesul de incarcare a bateriei
+ * Functie ce se ocupa de procesul de incarcare al bateriei
  *
  * @param currentLed - LED-ul care indica gradul de incarcare al bateriei
  */
@@ -138,7 +174,7 @@ void chargingHandler(uint8_t currentLed) {
     if (!blinkingStartMillis) 
       blinkingStartMillis = millis();
 
-    /* memoreaza momentul de timp curent */
+    /* momentul de timp curent devine cel precedent la urmatoarea intrare in functie */
     prevMillis = currentMillis;
 
     /* comuta starea LED-ului */
@@ -185,7 +221,7 @@ void stoppedChargingHandler() {
     if (!blinkingStartMillis)
       blinkingStartMillis = millis();
 
-    /* memoreaza momentul de timp curent */
+    /* momentul de timp curent devine cel precedent la urmatoarea intrare in functie */
     prevMillis = currentMillis;
 
     /* comuta simultan cele 4 LED-uri care indica procentul de incarcare */
@@ -244,7 +280,7 @@ void startBtnHandler() {
         }
       }
   }
-  /* salveaza starea curenta a butonului ca ultima stare */
+  /* starea curenta a butonului devine stare precedenta la urmatoare intrare in functie */
   lastStartBtnState = startBtnReading;
 }
 
@@ -286,13 +322,15 @@ void stopBtnHandler() {
       }
     }
   }
-  /* salveaza starea curenta a butonului ca ultima stare */
+  /* starea curenta a butonului devine stare precedenta la urmatoare intrare in functie */
   lastStopBtnState = stopBtnReading;
 }
 
 void loop() {
-    /* prinde apasarile butoanelor de start si stop */
+    /* prinde apasarile butonului de start */
     startBtnHandler();
+
+    /* prinde apasarile butonului de stop */
     stopBtnHandler();
 
     /* verifica daca statia incarca si nu este in animatia de finalizare */
