@@ -82,14 +82,13 @@ unsigned long newWordStartSeconds = 0;
 
 /* dictionar de cuvinte care vor fi afisate intr-o ordine aleatorie in cadrul unei runde */
 char* words[] = {(char*)"mystery", (char*)"horizon", (char*)"delicate", (char*)"wilderness", (char*)"integrity", 
-                (char*)"synchronize", (char*)"enthusiasm", (char*)"curiosity", (char*)"formidable", (char*)"adventure", 
-                (char*)"tranquility", (char*)"imagination", (char*)"resilience", (char*)"mesmerizing", (char*)"challenge", 
-                (char*)"vibrant", (char*)"remarkable", (char*)"perception", (char*)"elaborate", (char*)"discovery", 
-                (char*)"ephemeral", (char*)"innovation", (char*)"extraordinary", (char*)"phenomenon", (char*)"commitment", 
-                (char*)"sensation", (char*)"courageous", (char*)"picturesque", (char*)"inspiration", (char*)"unpredictable", 
-                (char*)"metamorphosis", (char*)"illumination", (char*)"perspective", (char*)"exhilarating", (char*)"magnificent", 
-                (char*)"harmonious", (char*)"accomplishment", (char*)"spectacular", (char*)"authenticity"
-              };
+                 (char*)"synchronize", (char*)"enthusiasm", (char*)"curiosity", (char*)"formidable", (char*)"adventure", 
+                 (char*)"tranquility", (char*)"imagination", (char*)"resilience", (char*)"mesmerizing", (char*)"challenge", 
+                 (char*)"vibrant", (char*)"remarkable", (char*)"perception", (char*)"elaborate", (char*)"discovery", 
+                 (char*)"ephemeral", (char*)"innovation", (char*)"extraordinary", (char*)"phenomenon", (char*)"commitment", 
+                 (char*)"sensation", (char*)"courageous", (char*)"picturesque", (char*)"inspiration", (char*)"unpredictable", 
+                 (char*)"metamorphosis", (char*)"illumination", (char*)"perspective", (char*)"exhilarating", (char*)"magnificent", 
+                 (char*)"harmonious", (char*)"accomplishment", (char*)"spectacular", (char*)"authenticity"};
 
 /* numarul de cuvinte din dictionar */
 uint8_t wordsNumber = sizeof(words) / sizeof(words[0]);
