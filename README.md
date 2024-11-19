@@ -8,3 +8,4 @@ Acesta este repo-ul unde voi încărca materiale de la cursul de Introducere în
 
 - [Tema #1 - EV Charger](ev-charger/)
 - [Tema #2 - TypeRacer Game](typeracer-game/)
+- [Tema #3 - Quick Time](quick-time/)
